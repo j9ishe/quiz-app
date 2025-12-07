@@ -30,7 +30,17 @@ export interface GradingResult {
   }>;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
+// Ensure API URL is absolute (includes protocol)
+const getApiBaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787';
+  // If URL doesn't start with http:// or https://, add https://
+  if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+    return `https://${url}`;
+  }
+  return url;
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export default function Home() {
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
